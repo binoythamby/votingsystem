@@ -1,0 +1,210 @@
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[Contab](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[fname] [varchar](50) NULL,
+	[lname] [varchar](50) NULL,
+	[fnm] [varchar](50) NULL,
+	[DOB] [varchar](50) NULL,
+	[Address] [varchar](500) NULL,
+	[email] [varchar](50) NULL,
+	[gender] [varchar](50) NULL,
+	[City] [varchar](50) NULL,
+	[userid] [varchar](50) NULL,
+	[pass] [varchar](50) NULL,
+	[image] [varchar](100) NULL,
+	[contact] [bigint] NULL,
+	[status] [varchar](50) NULL,
+ CONSTRAINT [PK_Condidatetab] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+----------------------------------
+USE [voting_db]
+GO
+
+/****** Object:  Table [dbo].[logos]    Script Date: 04/30/2011 19:47:02 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[logos](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[image] [varchar](50) NULL,
+	[candid] [varchar](50) NULL,
+ CONSTRAINT [PK_logos] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+-----------------------------------------
+USE [voting_db]
+GO
+
+/****** Object:  Table [dbo].[vote]    Script Date: 04/30/2011 19:47:17 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[vote](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[Voter_Id] [varchar](50) NULL,
+	[Con_Id] [varchar](50) NULL,
+	[date] [varchar](50) NULL,
+ CONSTRAINT [PK_vote] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+------------------------------------
+USE [voting_db]
+GO
+
+/****** Object:  Table [dbo].[votertab]    Script Date: 04/30/2011 19:47:31 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[votertab](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[fname] [varchar](50) NULL,
+	[lname] [varchar](50) NULL,
+	[fnm] [varchar](50) NULL,
+	[DOB] [varchar](50) NULL,
+	[Address] [varchar](500) NULL,
+	[email] [varchar](50) NULL,
+	[gender] [varchar](50) NULL,
+	[City] [varchar](50) NULL,
+	[userid] [varchar](50) NULL,
+	[pass] [varchar](50) NULL,
+	[image] [varchar](150) NULL,
+	[contact] [bigint] NULL,
+	[status] [varchar](50) NULL
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+---------------------------------
+USE [voting_db]
+GO
+
+/****** Object:  Table [dbo].[admin]    Script Date: 04/30/2011 19:47:44 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[admin](
+	[id] [int] NULL,
+	[userid] [varchar](50) NULL,
+	[pass] [varchar](50) NULL,
+	[fname] [varchar](50) NULL,
+	[lname] [varchar](50) NULL
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+-----------------------------------
+USE [voting_db]
+GO
+
+/****** Object:  View [dbo].[voteview]    Script Date: 04/30/2011 19:48:06 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+create view [dbo].[voteview] as
+select COUNT(Con_id) as vote,Con_id from vote group by con_id 
+GO
+
+
+-------------------------------------
+USE [voting_db]
+GO
+
+/****** Object:  View [dbo].[voteview2]    Script Date: 04/30/2011 19:48:20 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+create view [dbo].[voteview2] as
+select top 1 vote,con_id from voteview order by vote desc
+GO
+
+
+--------------------------------
+USE [voting_db]
+GO
+
+/****** Object:  View [dbo].[voteview3]    Script Date: 04/30/2011 19:48:33 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+create view [dbo].[voteview3] as
+select fname+' '+lname as name,con_id,vote from voteview2,Contab where voteview2.con_id=contab.userid
+GO
+
+
